@@ -123,7 +123,7 @@
 
     /* PRICELIST GRID */
     .pl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    @media (max-width: 360px) { .pl-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .pl-grid { gap: 8px; } }
 
     .pl-card {
       background: white; border-radius: var(--radius-sm);
@@ -157,9 +157,9 @@
     }
     .pk .pl-row { background: rgba(253,232,244,0.5); }
     .pv .pl-row { background: rgba(239,228,252,0.5); }
-    .pl-dur { font-size: 9.5px; color: var(--text-sub); white-space: nowrap; min-width: 36px; flex-shrink: 0; }
+    .pl-dur { font-size: 10px; color: var(--text-sub); white-space: nowrap; flex-shrink: 0; max-width: 55%; overflow: hidden; text-overflow: ellipsis; }
     .pl-dots { flex: 1; border-bottom: 1.5px dotted rgba(184,152,216,0.4); margin: 0 4px; margin-bottom: 3px; }
-    .pl-price { font-size: 9.5px; font-weight: 600; white-space: nowrap; }
+    .pl-price { font-size: 10px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
     .pk .pl-price { color: var(--pink-dark); }
     .pv .pl-price { color: var(--purple-dark); }
 
@@ -390,7 +390,7 @@
 <script>
 const API='https://script.google.com/macros/s/AKfycbx3ZDa0PnhCsUiI89m0PKZ6PsYeRsxtoKRwZlWRJi2i8-P5fWtth2HFMFRU50vhxQWS2w/exec';
 const PW='candylucu';
-const SINGLE=['customer_streaming','customer_editing','customer_education','customer_music','customer_other','customer_mlbb','customer_robux','customer_instagram','customer_tiktok'];
+const SINGLE=['customer_streaming','customer_editing','customer_education','customer_music','customer_other'];
 
 // All 17 SVG decos (pairs: [tl, tr])
 const DECOS = [
@@ -475,10 +475,18 @@ function goTo(pageId){
     'page-topup':['customer_mlbb','customer_robux'],'page-sosmed':['customer_instagram','customer_tiktok']
   };
   if(loads[pageId]){
-    Promise.all(loads[pageId].map(s=>dataCache[s]?Promise.resolve():fetchSheet(s))).then(()=>{
+    const sheets=loads[pageId];
+    const toFetch=sheets.filter(s=>!dataCache[s]);
+    if(toFetch.length===0){
       if(pageId==='page-topup') renderCombinedGrid(['customer_mlbb','customer_robux'],'content-topup_mlbb_robux');
       if(pageId==='page-sosmed') renderCombinedGrid(['customer_instagram','customer_tiktok'],'content-sosmed_ig_tiktok');
-    });
+      if(SINGLE.includes(sheets[0])) renderSheet(sheets[0]);
+    } else {
+      Promise.all(toFetch.map(s=>fetchSheet(s))).then(()=>{
+        if(pageId==='page-topup') renderCombinedGrid(['customer_mlbb','customer_robux'],'content-topup_mlbb_robux');
+        if(pageId==='page-sosmed') renderCombinedGrid(['customer_instagram','customer_tiktok'],'content-sosmed_ig_tiktok');
+      });
+    }
   }
   initSingleAdmins();
 }
