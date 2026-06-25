@@ -45,14 +45,14 @@
     .title-wrap { display: inline-block; line-height: 1; position: relative; z-index: 2; }
     .title-line1 {
       font-family: 'Muthiara', cursive;
-      font-size: 46px; color: #e8a8cc;
+      font-size: 64px; color: #e8a8cc;
       display: block; line-height: 1;
     }
     .title-line2 {
       font-family: 'PorkS', cursive;
-      font-size: 24px; color: #b898d8;
+      font-size: 28px; color: #b898d8;
       display: block; line-height: 1;
-      margin-top: -10px; letter-spacing: 2px;
+      margin-top: -14px; letter-spacing: 2px;
     }
 
     /* HOME */
@@ -368,9 +368,15 @@
   <button class="back-btn" onclick="goTo('page-home')">← kembali</button>
   <div class="page-header"><div class="title-wrap"><span class="title-line1">price list</span><span class="title-line2">topup</span></div></div>
   <div class="container">
-    <div id="adminsec-customer_mlbb"></div><div id="adminsec-customer_robux"></div>
     <div class="pl-grid" id="content-topup_mlbb_robux"><div class="loading-msg" style="grid-column:1/-1"><span class="spin">↻</span> memuat...</div></div>
-    
+    <div class="admin-bar"><div class="admin-status" id="adminstatus-topup">mode publik</div><button class="btn-admin-toggle" id="admintoggle-topup" onclick="toggleAdminGroup('topup',['customer_mlbb','customer_robux'])">masuk admin</button></div>
+    <div id="pwsec-topup" class="hidden"><div class="pw-row"><input type="password" id="pwinput-topup" placeholder="password admin..." /><button class="pw-btn" onclick="submitPwGroup('topup',['customer_mlbb','customer_robux'])">masuk</button></div><div class="pw-error hidden" id="pwerr-topup">password salah.</div></div>
+    <div id="admin-topup" class="hidden edit-section">
+      <div id="editlist-customer_mlbb"></div><button class="btn-add-item" onclick="addEditItem('customer_mlbb')">+ tambah mlbb</button><button class="btn-save" onclick="saveSheet('customer_mlbb')">simpan mlbb</button>
+      <div style="margin-top:8px;"></div>
+      <div id="editlist-customer_robux"></div><button class="btn-add-item" onclick="addEditItem('customer_robux')">+ tambah robux</button><button class="btn-save" onclick="saveSheet('customer_robux')">simpan robux</button>
+      <div class="save-msg hidden" id="savemsg-topup"></div>
+    </div>
     <div class="footer-btns"><a class="footer-btn wa" href="https://wa.me/6285190818032" target="_blank">whatsapp</a><a class="footer-btn tg" href="https://t.me/hallokokoro" target="_blank">telegram</a></div>
   </div>
 </div>
@@ -380,9 +386,15 @@
   <button class="back-btn" onclick="goTo('page-home')">← kembali</button>
   <div class="page-header"><div class="title-wrap"><span class="title-line1">price list</span><span class="title-line2">sosmed needs</span></div></div>
   <div class="container">
-    <div id="adminsec-customer_instagram"></div><div id="adminsec-customer_tiktok"></div>
     <div class="pl-grid" id="content-sosmed_ig_tiktok"><div class="loading-msg" style="grid-column:1/-1"><span class="spin">↻</span> memuat...</div></div>
-    
+    <div class="admin-bar"><div class="admin-status" id="adminstatus-sosmed">mode publik</div><button class="btn-admin-toggle" id="admintoggle-sosmed" onclick="toggleAdminGroup('sosmed',['customer_instagram','customer_tiktok'])">masuk admin</button></div>
+    <div id="pwsec-sosmed" class="hidden"><div class="pw-row"><input type="password" id="pwinput-sosmed" placeholder="password admin..." /><button class="pw-btn" onclick="submitPwGroup('sosmed',['customer_instagram','customer_tiktok'])">masuk</button></div><div class="pw-error hidden" id="pwerr-sosmed">password salah.</div></div>
+    <div id="admin-sosmed" class="hidden edit-section">
+      <div id="editlist-customer_instagram"></div><button class="btn-add-item" onclick="addEditItem('customer_instagram')">+ tambah instagram</button><button class="btn-save" onclick="saveSheet('customer_instagram')">simpan instagram</button>
+      <div style="margin-top:8px;"></div>
+      <div id="editlist-customer_tiktok"></div><button class="btn-add-item" onclick="addEditItem('customer_tiktok')">+ tambah tiktok</button><button class="btn-save" onclick="saveSheet('customer_tiktok')">simpan tiktok</button>
+      <div class="save-msg hidden" id="savemsg-sosmed"></div>
+    </div>
     <div class="footer-btns"><a class="footer-btn wa" href="https://wa.me/6285190818032" target="_blank">whatsapp</a><a class="footer-btn tg" href="https://t.me/hallokokoro" target="_blank">telegram</a></div>
   </div>
 </div>
