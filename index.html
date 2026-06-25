@@ -726,7 +726,9 @@ function toggleAdminGroup(group,sheets){
     g('admintoggle-'+group).classList.remove('active');
     g('admin-'+group).classList.add('hidden');
     g('pwsec-'+group).classList.add('hidden');
-    sheets.forEach(s=>renderSheetSimple(s)); return;
+    if(group==='topup') renderCombinedGrid(['customer_mlbb','customer_robux'],'content-topup_mlbb_robux');
+    else if(group==='sosmed') renderCombinedGrid(['customer_instagram','customer_tiktok'],'content-sosmed_ig_tiktok');
+    return;
   }
   const pw=g('pwsec-'+group);
   pw.classList.toggle('hidden'); if(!pw.classList.contains('hidden')) g('pwinput-'+group).focus();
@@ -740,7 +742,10 @@ function submitPwGroup(group,sheets){
     g('admintoggle-'+group).textContent='keluar admin';
     g('admintoggle-'+group).classList.add('active');
     g('admin-'+group).classList.remove('hidden');
-    sheets.forEach(s=>{buildEditList(s);renderSheetSimple(s);}); g('pwinput-'+group).value='';
+    sheets.forEach(s=>buildEditList(s));
+    if(group==='topup') renderCombinedGrid(['customer_mlbb','customer_robux'],'content-topup_mlbb_robux');
+    else if(group==='sosmed') renderCombinedGrid(['customer_instagram','customer_tiktok'],'content-sosmed_ig_tiktok');
+    g('pwinput-'+group).value='';
   } else {
     g('pwerr-'+group).classList.remove('hidden');
     g('pwinput-'+group).value='';
@@ -777,10 +782,16 @@ async function saveSheet(sheet){
   if(g('judul-'+sheet+'-0')!==null) dataCache[sheet]=collectItems(sheet);
   try{
     await apiCall({action:'save',sheet,items:JSON.stringify(dataCache[sheet])});
-    renderSheet(sheet);
-    if(SINGLE.includes(sheet)) renderSheet(sheet); else renderSheetSimple(sheet);
+    // Render correct grid after save
+    if(SINGLE.includes(sheet)){
+      renderSheet(sheet);
+    } else if(sheet==='customer_mlbb'||sheet==='customer_robux'){
+      renderCombinedGrid(['customer_mlbb','customer_robux'],'content-topup_mlbb_robux');
+    } else if(sheet==='customer_instagram'||sheet==='customer_tiktok'){
+      renderCombinedGrid(['customer_instagram','customer_tiktok'],'content-sosmed_ig_tiktok');
+    }
     buildEditList(sheet);
-    const group=sheet.startsWith('customer_mlbb')||sheet.startsWith('customer_robux')?'topup':sheet.startsWith('customer_instagram')||sheet.startsWith('customer_tiktok')?'sosmed':sheet;
+    const group=sheet==='customer_mlbb'||sheet==='customer_robux'?'topup':sheet==='customer_instagram'||sheet==='customer_tiktok'?'sosmed':sheet;
     const msgEl=g('savemsg-'+group)||g('savemsg-'+sheet);
     if(msgEl){msgEl.textContent='tersimpan!';msgEl.classList.remove('hidden');setTimeout(()=>msgEl.classList.add('hidden'),2500);}
   }catch(e){alert('gagal menyimpan. coba lagi.');}
